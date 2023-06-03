@@ -27,12 +27,12 @@ const getDentist = async (req, res) => {
 };
 //create
 const createDentist = async (req, res) => {
-    const { name, email, password, age, contact_number, prc_number, ptr_number, branches} = req.body;
+    const {name, email, password, age, contact_number, prc_number, ptr_number, branches} = req.body;
 
     try {
         const hashPassword = await bcrypt.hash(password, 10);
         const dentist = await Dentist.create({
-            
+
             name: name,
             email: email,
             password: hashPassword,
