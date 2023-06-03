@@ -2,6 +2,54 @@ const bcrypt = require("bcrypt");
 const Dentist = require("../models/Dentists")
 
 //GET
+const getMolinoDentists = async (req, res) =>{
+    try {
+        const dentist = await Dentist.find({branches:'Molino'});
+        res.json(dentist);
+    } catch (error) {
+        throw err;
+    }
+};
+const getLaspinasDentists = async (req, res) =>{
+    try {
+        const dentist = await Dentist.find({branches:'Las pinas'});
+        res.json(dentist);
+    } catch (error) {
+        throw err;
+    }
+};
+const getCarmonaDentists = async (req, res) =>{
+    try {
+        const dentist = await Dentist.find({branches:'Carmona'});
+        res.json(dentist);
+    } catch (error) {
+        throw err;
+    }
+};
+const getDasmarinasDentists = async (req, res) =>{
+    try {
+        const dentist = await Dentist.find({branches:'Dasmarinas'});
+        res.json(dentist);
+    } catch (error) {
+        throw err;
+    }
+};
+const getPanapaanDentists = async (req, res) =>{
+    try {
+        const dentist = await Dentist.find({branches:'Panapaan'});
+        res.json(dentist);
+    } catch (error) {
+        throw err;
+    }
+};
+const getRosarioDentists = async (req, res) =>{
+    try {
+        const dentist = await Dentist.find({branches:'Rosario'});
+        res.json(dentist);
+    } catch (error) {
+        throw err;
+    }
+};
 const getAllDentists = async (req, res) =>{
     try {
         const dentist = await Dentist.find({});
@@ -99,5 +147,10 @@ module.exports = {
     createDentist,
     updateDentist,
     deleteDentist,
-    
+    getRosarioDentists,
+    getPanapaanDentists,
+    getDasmarinasDentists,
+    getCarmonaDentists,
+    getLaspinasDentists,
+    getMolinoDentists,
 };

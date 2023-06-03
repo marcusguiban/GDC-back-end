@@ -6,6 +6,12 @@ const DentistsController = require("../controllers/DentistsController");
 
 
 //get request or read
+router.get("/Panapaan", DentistsController.getPanapaanDentists );
+router.get("/Rosario", DentistsController.getRosarioDentists );
+router.get("/Dasmarinas", DentistsController.getDasmarinasDentists );
+router.get("/Carmona", DentistsController.getCarmonaDentists );
+router.get("/Laspinas", DentistsController.getLaspinasDentists );
+router.get("/Molino", DentistsController.getMolinoDentists );
 
 router.get("/", DentistsController.getAllDentists );
 
