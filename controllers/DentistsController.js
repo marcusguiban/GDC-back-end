@@ -75,7 +75,7 @@ const getDentist = async (req, res) => {
 };
 //create
 const createDentist = async (req, res) => {
-    const {name, email, password, age, contact_number, prc_number, ptr_number, branches} = req.body;
+    const {name, email, password, birthday, contact_number, prc_number, ptr_number, branches} = req.body;
 
     try {
         const hashPassword = await bcrypt.hash(password, 10);
@@ -84,7 +84,7 @@ const createDentist = async (req, res) => {
             name: name,
             email: email,
             password: hashPassword,
-            age:age,
+            birthday:birthday,
             contact_number:contact_number,
             prc_number:prc_number,
             ptr_number:ptr_number,
@@ -95,7 +95,7 @@ const createDentist = async (req, res) => {
 
 
         if(dentist){
-            res.status(201).json({ msg: `Data inserted with id ${Dentist._id}`});
+            res.status(201).json({ msg: `Data inserted with id ${Dentist.dentistsId}`});
         } else {
             res.status(400).json({msg:"Data not inserted"})
         }
@@ -106,7 +106,7 @@ const createDentist = async (req, res) => {
 };
 // update
 const updateDentist = async (req, res)=>{
-    const { id, name, email, password, age, contact_number, prc_number, ptr_number, branches } = req.body;
+    const { id, name, email, password, birthday, contact_number, prc_number, ptr_number, branches } = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
     // const Profile_pic = req.file;
 
@@ -117,7 +117,7 @@ const updateDentist = async (req, res)=>{
         dentist.name = name;
         dentist.email = email;
         dentist.password = hashPassword;
-        dentist.age = age;
+        dentist.birthday = birthday;
         dentist.contact_number = contact_number;
         dentist.prc_number = prc_number;
         dentist.ptr_number = ptr_number;

@@ -3,6 +3,10 @@ const Schema = mongoose.Schema
 
 
 const dentistsSchema = new Schema({
+    dentistsId: {
+        type: String,
+        unique: true,
+      },
     name: {
         type: String,
         required: true,
@@ -16,18 +20,16 @@ const dentistsSchema = new Schema({
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
           'Please provide a valid email',
         ],
-        // unique: true,
+
     },
-    age: {
-        type: Number,
-        required: true
-    },
+    birthday: {
+        type: Date,
+        required: true,
+      },
     contact_number: {
         type: String,
         required: true,
-        // unique: true,
-        // maxlength: 10, 
-        // minlength: 10
+
     },
     password: {
         type: String,
@@ -37,16 +39,12 @@ const dentistsSchema = new Schema({
     prc_number: {
         type: String,
         required: true,
-        // max: 9999999,
-        // min: 1000000,
-        // unique: true,  
+
     },
     ptr_number: {
         type: String,
         required: true,
-        // max: 99999999,
-        // min: 10000000,
-        // unique: true,
+
         
     },
     branches: {
@@ -56,4 +54,11 @@ const dentistsSchema = new Schema({
         default: 'Panapaan',
     }
 },{timestamps:true});
+
+dentistsSchema.pre("save", function (next) {
+    const currentYear = new Date().getFullYear().toString();
+    const randomDigits = Math.floor(10000 + Math.random() * 90000).toString().substring(0, 5);
+    this.dentistsId = currentYear + randomDigits;
+    next();
+  });
 module.exports = mongoose.model("Dentists", dentistsSchema);
