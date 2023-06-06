@@ -20,11 +20,11 @@ router.get("/:id", DentistsController.getDentist);
 
 // Post Request
 
-router.post("/", upload.single('profilePicture'), DentistsController.createDentist);
+router.post("/", DentistsController.createDentist);
 //update
+router.put("/",DentistsController.updateDentist);
 
-
-router.put("/", upload.single('profilePicture'),DentistsController.updateDentist);
+router.put('/profile-pic/:id', upload.single('profilePicture'), DentistsController.updateProfilePic);
 
 // delete
 

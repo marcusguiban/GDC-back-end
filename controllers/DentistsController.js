@@ -76,12 +76,9 @@ const getDentist = async (req, res) => {
 //create
 const createDentist = async (req, res) => {
     const {name, email, password, birthday, contact_number, prc_number, ptr_number, branches} = req.body;
-
     try {
         const hashPassword = await bcrypt.hash(password, 10);
-
         const dentist = await Dentist.create({
-            
             name: name,
             email: email,
             password: hashPassword,
@@ -90,11 +87,8 @@ const createDentist = async (req, res) => {
             prc_number:prc_number,
             ptr_number:ptr_number,
             branches:branches,
-            profilePicture: req.file ? generateImageURL(req.file.filename) : '', // Save the image URL as profilePicture
+            profilePicture: req.file ? req.file.filename : '', // Save the image URL as profilePicture
         });
-
-
-
         if(dentist){
             res.status(201).json({ msg: `Data inserted with id ${Dentist.dentistsId}`});
         } else {
@@ -107,22 +101,11 @@ const createDentist = async (req, res) => {
 };
 // update
 const updateDentist = async (req, res) => {
-    const {
-      id,
-      name,
-      email,
-      password,
-      birthday,
-      contact_number,
-      prc_number,
-      ptr_number,
-      branches
-    } = req.body;
+    const { id, name, email, password, birthday, contact_number, prc_number, ptr_number, branches} = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
-    const profilePicture = req.file;
-  
     try {
       const dentist = await Dentist.findById(id);
+
       dentist.name = name;
       dentist.email = email;
       dentist.password = hashPassword;
@@ -131,7 +114,7 @@ const updateDentist = async (req, res) => {
       dentist.prc_number = prc_number;
       dentist.ptr_number = ptr_number;
       dentist.branches = branches;
-      dentist.profilePicture = req.file ? generateImageURL(req.file.filename) : dentist.profilePicture; // Save the image URL if provided, otherwise use existing URL
+
 
   
       await dentist.save();
@@ -140,6 +123,25 @@ const updateDentist = async (req, res) => {
       throw error;
     }
   };
+  const updateProfilePic = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const dentist = await Dentist.findById(id);
+      if (!dentist) {
+        return res.status(404).json({ message: 'Dentist not found' });
+      }
+  
+      dentist.profilePicture = req.file ? req.file.filename : '';
+      await dentist.save();
+  
+      res.status(200).json({ message: 'Profile picture updated successfully' });
+    } catch (error) {
+      console.error('Error updating profile picture:', error);
+      res.status(500).json({ message: 'Failed to update profile picture' });
+    }
+  };
+  
 // delete
 const deleteDentist = async (req, res)=>{
     const { id } = req.body;
@@ -150,11 +152,6 @@ const deleteDentist = async (req, res)=>{
         throw error;
     }
 };
-function generateImageURL(filename) {
-    // Replace 'YOUR_DOMAIN' with the actual domain where your images are served from
-    const domain = 'https://gdc-back-end.vercel.app';
-    return `${domain}/uploads/${filename}`; // Assuming the images are stored in the 'uploads' directory
-  }
 module.exports = {
     getAllDentists,
     getDentist,
@@ -167,4 +164,5 @@ module.exports = {
     getCarmonaDentists,
     getLaspinasDentists,
     getMolinoDentists,
+    updateProfilePic,
 };
