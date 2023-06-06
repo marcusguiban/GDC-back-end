@@ -152,7 +152,7 @@ const deleteDentist = async (req, res)=>{
 };
 function generateImageURL(filename) {
     // Replace 'YOUR_DOMAIN' with the actual domain where your images are served from
-    const domain = 'https://GuibanDentalClinic.com';
+    const domain = 'https://gdc-back-end.vercel.app';
     return `${domain}/uploads/${filename}`; // Assuming the images are stored in the 'uploads' directory
   }
 module.exports = {
