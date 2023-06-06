@@ -79,8 +79,9 @@ const createDentist = async (req, res) => {
 
     try {
         const hashPassword = await bcrypt.hash(password, 10);
-        const dentist = await Dentist.create({
 
+        const dentist = await Dentist.create({
+            
             name: name,
             email: email,
             password: hashPassword,
@@ -88,8 +89,8 @@ const createDentist = async (req, res) => {
             contact_number:contact_number,
             prc_number:prc_number,
             ptr_number:ptr_number,
-            branches:branches
-
+            branches:branches,
+            profilePicture: req.file ? generateImageURL(req.file.filename) : '', // Save the image URL as profilePicture
         });
 
 
@@ -105,31 +106,40 @@ const createDentist = async (req, res) => {
 
 };
 // update
-const updateDentist = async (req, res)=>{
-    const { id, name, email, password, birthday, contact_number, prc_number, ptr_number, branches } = req.body;
+const updateDentist = async (req, res) => {
+    const {
+      id,
+      name,
+      email,
+      password,
+      birthday,
+      contact_number,
+      prc_number,
+      ptr_number,
+      branches
+    } = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
-    // const Profile_pic = req.file;
-
-
-    
+    const profilePicture = req.file;
+  
     try {
-        const dentist = await Dentist.findById(id);
-        dentist.name = name;
-        dentist.email = email;
-        dentist.password = hashPassword;
-        dentist.birthday = birthday;
-        dentist.contact_number = contact_number;
-        dentist.prc_number = prc_number;
-        dentist.ptr_number = ptr_number;
-        dentist.branches= branches
-        // dentist.Profile_pic = Profile_pic;
+      const dentist = await Dentist.findById(id);
+      dentist.name = name;
+      dentist.email = email;
+      dentist.password = hashPassword;
+      dentist.birthday = birthday;
+      dentist.contact_number = contact_number;
+      dentist.prc_number = prc_number;
+      dentist.ptr_number = ptr_number;
+      dentist.branches = branches;
+      dentist.profilePicture = req.file ? generateImageURL(req.file.filename) : dentist.profilePicture; // Save the image URL if provided, otherwise use existing URL
 
-        await dentist.save();
-        res.status(200).json({msg: "Data updated successfully"});
+  
+      await dentist.save();
+      res.status(200).json({ msg: "Data updated successfully" });
     } catch (error) {
-        throw error;
+      throw error;
     }
-};
+  };
 // delete
 const deleteDentist = async (req, res)=>{
     const { id } = req.body;
@@ -140,7 +150,11 @@ const deleteDentist = async (req, res)=>{
         throw error;
     }
 };
-
+function generateImageURL(filename) {
+    // Replace 'YOUR_DOMAIN' with the actual domain where your images are served from
+    const domain = 'https://GuibanDentalClinic.com';
+    return `${domain}/uploads/${filename}`; // Assuming the images are stored in the 'uploads' directory
+  }
 module.exports = {
     getAllDentists,
     getDentist,

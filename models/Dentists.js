@@ -52,7 +52,10 @@ const dentistsSchema = new Schema({
         required: true,
         enum: ['Panapaan', 'Rosario', 'Carmona', 'Molino', 'Las pinas', 'Dasmarinas'],
         default: 'Panapaan',
-    }
+    },
+    profilePicture: {
+        type: String, // Assuming the profile picture will be stored as a URL or file path
+      },
 },{timestamps:true});
 
 dentistsSchema.pre("save", function (next) {
