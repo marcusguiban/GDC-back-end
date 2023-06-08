@@ -76,7 +76,7 @@ const getDentist = async (req, res) => {
 //create
 const createDentist = async (req, res) => {
     const {name, email, password, birthday, contact_number, prc_number, ptr_number, branches} = req.body;
-    try {
+    try {    
         const hashPassword = await bcrypt.hash(password, 10);
         const dentist = await Dentist.create({
             name: name,
@@ -101,28 +101,63 @@ const createDentist = async (req, res) => {
 };
 // update
 const updateDentist = async (req, res) => {
-    const { id, name, email, password, birthday, contact_number, prc_number, ptr_number, branches} = req.body;
-    const hashPassword = await bcrypt.hash(password, 10);
+    const { id, name, email, password, birthday, contact_number, prc_number, ptr_number, branches } = req.body;
     try {
+      
       const dentist = await Dentist.findById(id);
-
       dentist.name = name;
       dentist.email = email;
-      dentist.password = hashPassword;
       dentist.birthday = birthday;
       dentist.contact_number = contact_number;
       dentist.prc_number = prc_number;
       dentist.ptr_number = ptr_number;
       dentist.branches = branches;
-
-
   
       await dentist.save();
       res.status(200).json({ msg: "Data updated successfully" });
     } catch (error) {
-      throw error;
+      console.log(error);
+      res.status(500).json({ error: "Internal server error" });
     }
   };
+  
+  const changePassword = async (req, res) => {
+    const { id, email, password, newPassword, confirmPassword } = req.body;
+  
+    try {
+      const dentist = await Dentist.findById(id);
+      if (!dentist) {
+        return res.status(400).json({ msg: "Invalid dentist ID" });
+      }
+  
+      if (dentist.email !== email) {
+        return res.status(400).json({ msg: "Invalid email" });
+      }
+  
+      const isPasswordCorrect = await bcrypt.compare(password, dentist.password);
+      if (!isPasswordCorrect) {
+        return res.status(400).json({ msg: "Invalid password" });
+      }
+  
+      if (newPassword !== confirmPassword) {
+        return res.status(400).json({ msg: "New passwords do not match" });
+      }
+  
+      const hashNewPassword = await bcrypt.hash(newPassword, 10);
+  
+      dentist.password = hashNewPassword;
+      await dentist.save();
+  
+      res.status(200).json({ msg: "Password changed successfully" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+  
+  
+  
+  
   const updateProfilePic = async (req, res) => {
     const { id } = req.params;
   
@@ -165,4 +200,5 @@ module.exports = {
     getLaspinasDentists,
     getMolinoDentists,
     updateProfilePic,
+    changePassword,
 };
