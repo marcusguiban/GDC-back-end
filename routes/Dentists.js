@@ -24,7 +24,9 @@ router.post("/", upload.single('profilePicture'),DentistsController.createDentis
 //update
 router.put("/",upload.single('profilePicture'), DentistsController.updateDentist);
 
-router.put("/Change-password/",upload.single('profilePicture'), DentistsController.changePassword);
+router.put("/Change-password",upload.single('profilePicture'), DentistsController.changePassword);
+
+router.put("/update",upload.single('profilePicture'), DentistsController.updateOtherInfo);
 
 router.put('/profile-pic/:id', upload.single('profilePicture'), DentistsController.updateProfilePic);
 

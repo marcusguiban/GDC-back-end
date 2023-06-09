@@ -21,6 +21,11 @@ const dentistsSchema = new Schema({
           'Please provide a valid email',
         ],
     },
+    gender: {
+        type: String,
+        enum: ["Male", "Female", "Other"],
+        required: true,
+      },
     birthday: {
         type: Date,
         required: true,
@@ -55,6 +60,17 @@ const dentistsSchema = new Schema({
     profilePicture: {
         type: String, // Assuming the profile picture will be stored as a URL or file path
       },
+      education: {
+        type: String,
+        
+      },
+      degree: {
+        type: String,
+      },
+      
+      occupation: {
+          type: String,
+        },
 },{timestamps:true});
 
 dentistsSchema.pre("save", function (next) {

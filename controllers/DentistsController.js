@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const Dentist = require("../models/Dentists")
 
+
 //GET
 const getMolinoDentists = async (req, res) =>{
     try {
@@ -75,19 +76,29 @@ const getDentist = async (req, res) => {
 };
 //create
 const createDentist = async (req, res) => {
-    const {name, email, password, birthday, contact_number, prc_number, ptr_number, branches} = req.body;
+    const {name, email, password, gender, birthday, contact_number, prc_number, ptr_number, branches} = req.body;
     try {    
         const hashPassword = await bcrypt.hash(password, 10);
+        let profilePicture = ''; // Default profile picture value
+
+        // Check if a file is uploaded
+        if (req.file) {
+            profilePicture = req.file.filename; // Use the uploaded image URL
+        } else {
+            // Set default image file path relative to the current file
+            profilePicture = `https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg`;
+        }
         const dentist = await Dentist.create({
             name: name,
             email: email,
             password: hashPassword,
+            gender: gender,
             birthday:birthday,
             contact_number:contact_number,
             prc_number:prc_number,
             ptr_number:ptr_number,
             branches:branches,
-            profilePicture: req.file ? req.file.filename : '', // Save the image URL as profilePicture
+            profilePicture: profilePicture// Save the image URL as profilePicture
         });
         if(dentist){
             res.status(201).json({ msg: `Data inserted with id ${Dentist.dentistsId}`});
@@ -101,7 +112,7 @@ const createDentist = async (req, res) => {
 };
 // update
 const updateDentist = async (req, res) => {
-    const { id, name, email, password, birthday, contact_number, prc_number, ptr_number, branches } = req.body;
+    const { id, name, email, birthday, contact_number, prc_number, ptr_number, branches } = req.body;
     try {
       
       const dentist = await Dentist.findById(id);
@@ -176,6 +187,28 @@ const updateDentist = async (req, res) => {
       res.status(500).json({ message: 'Failed to update profile picture' });
     }
   };
+
+  const updateOtherInfo = async (req, res) => {
+    const { id, education, degree, occupation } = req.body;
+  
+    try {
+      const dentist = await Dentist.findById(id);
+  
+      if (!dentist) {
+        return res.status(404).json({ msg: 'Dentist not found' });
+      }
+  
+      dentist.education = education;
+      dentist.degree = degree;
+      dentist.occupation = occupation;
+  
+      const updatedDentist = await dentist.save();
+  
+      res.status(200).json({ msg: 'Other info updated successfully', dentist: updatedDentist });
+    } catch (error) {
+      res.status(500).json({ msg: 'Error updating other info', error: error.message });
+    }
+  };
   
 // delete
 const deleteDentist = async (req, res)=>{
@@ -201,4 +234,5 @@ module.exports = {
     getMolinoDentists,
     updateProfilePic,
     changePassword,
+    updateOtherInfo, 
 };
