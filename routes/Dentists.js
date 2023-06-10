@@ -36,4 +36,5 @@ router.delete("/",DentistsController.deleteDentist);
 
 
 
+
 module.exports = router;
