@@ -26,11 +26,7 @@ const patientSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  dentist: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Dentist",
-  },
-  branches: {
+  branches: {   
     type: String,
     required: true,
     enum: ['Panapaan', 'Rosario', 'Carmona', 'Molino', 'Las pinas', 'Dasmarinas'],

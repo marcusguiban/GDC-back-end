@@ -5,7 +5,7 @@ const getAllAppointments = async (req, res) => {
     const appointments = await Appointment.find({});
     res.json(appointments);
   } catch (error) {
-    throw error;
+    res.status(500).json({ error: "Failed to retrieve appointments" });
   }
 };
 
@@ -14,20 +14,24 @@ const getAppointment = async (req, res) => {
 
   try {
     const appointment = await Appointment.findById(id);
+    if (!appointment) {
+      return res.status(404).json({ error: "Appointment not found" });
+    }
     res.json(appointment);
   } catch (error) {
-    throw error;
+    res.status(500).json({ error: "Failed to retrieve appointment" });
   }
 };
 
 const createAppointment = async (req, res) => {
-  const { patient, dentist, branch, time } = req.body;
+  const { patient, dentist, branch, time,day } = req.body;
 
   try {
     const appointment = await Appointment.create({
       patient: patient,
       dentist: dentist,
       branch: branch,
+      day:day,
       time: time,
     });
 
@@ -37,7 +41,7 @@ const createAppointment = async (req, res) => {
       res.status(400).json({ msg: "Appointment not created" });
     }
   } catch (error) {
-    throw error;
+    res.status(500).json({ error: "Failed to create appointment" });
   }
 };
 
@@ -58,7 +62,7 @@ const updateAppointment = async (req, res) => {
       res.status(400).json({ msg: "Appointment not updated" });
     }
   } catch (error) {
-    throw error;
+    res.status(500).json({ error: "Failed to update appointment" });
   }
 };
 
@@ -66,11 +70,14 @@ const deleteAppointment = async (req, res) => {
   const { id } = req.body;
 
   try {
-    await Appointment.findByIdAndDelete(id)
-      .then(() => res.status(200).json({ msg: `Appointment deleted with id ${id}` }))
-      .catch((err) => res.status(400).json({ msg: "Appointment not deleted" }));
+    const appointment = await Appointment.findByIdAndDelete(id);
+    if (appointment) {
+      res.status(200).json({ msg: `Appointment deleted with id ${id}` });
+    } else {
+      res.status(400).json({ msg: "Appointment not deleted" });
+    }
   } catch (error) {
-    throw error;
+    res.status(500).json({ error: "Failed to delete appointment" });
   }
 };
 

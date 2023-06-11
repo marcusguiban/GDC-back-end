@@ -4,6 +4,7 @@ const app = express();
 const path = require("path");
 const cors = require("cors");
 const connection = require("./database");
+
 const UserRoutes = require("./routes/User");
 const DentistsRoutes = require("./routes/Dentists")
 const PatientRoutes = require("./routes/Patient")

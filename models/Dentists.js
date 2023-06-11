@@ -48,8 +48,6 @@ const dentistsSchema = new Schema({
     ptr_number: {
         type: String,
         required: true,
-
-        
     },
     branches: {
         type: String,

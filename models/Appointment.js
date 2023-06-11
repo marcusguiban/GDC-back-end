@@ -15,19 +15,34 @@ const appointmentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  time: {
+  day: {
     type: Date,
     required: true,
     validate: {
-      validator: function(value) {
-        const startTime = new Date(value);
-        const endTime = new Date(startTime.getTime() + 60 * 60 * 1000); // Adding one hour to the start time
-        const startOfDay = new Date(startTime).setHours(9, 0, 0, 0);
-        const endOfDay = new Date(startTime).setHours(17, 0, 0, 0);
+      validator: function (value) {
         const now = new Date();
-        return startTime > now && endTime > now && startTime >= startOfDay && endTime <= endOfDay;
+        const selectedDay = new Date(value).setHours(0, 0, 0, 0);
+        return selectedDay >= now.setHours(0, 0, 0, 0); // Allow appointments from the current day onwards
       },
-      message: "Invalid appointment time. Appointments are only allowed between 9:00 AM and 5:00 PM and should be one hour long.",
+      message: "Invalid appointment day. Appointments can only be scheduled for the current day onwards.",
+    },
+  },
+  time: {
+    type: String,
+    required: true,
+    validate: {
+      validator: function (value) {
+        const validTimes = [
+          "09:00am-10:00am",
+          "11:00am-12:00pm",
+          "12:00pm-01:00pm",
+          "02:00pm-03:00pm",
+          "03:00pm-04:00pm",
+          "04:00pm-05:00pm",
+        ];
+        return validTimes.includes(value);
+      },
+      message: "Invalid appointment time. Available appointment times: 09:00am-10:00am, 11:00am-12:00pm, 12:00pm-01:00pm, 02:00pm-03:00pm, 04:00pm-05:00pm.",
     },
   },
   approved: {
@@ -36,9 +51,10 @@ const appointmentSchema = new mongoose.Schema({
   },
 });
 
-appointmentSchema.index({ branch: 1, time: 1 }, { unique: true });
+appointmentSchema.index({ branch: 1, day: 1, time: 1 }, { unique: true });
 
 const Appointment = mongoose.model("Appointment", appointmentSchema);
 
 module.exports = Appointment;
+
 

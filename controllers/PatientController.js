@@ -24,7 +24,7 @@ const getPatient = async (req, res) => {
 };
 
 const createPatient = async (req, res) => {
-  const { name, password, birthday, email, branches, contactNumber, dentist } = req.body;
+  const { name, password, birthday, email, branches, contactNumber } = req.body;
 
   try {
     const patient = await Patient.create({
@@ -33,7 +33,6 @@ const createPatient = async (req, res) => {
       birthday,
       contactNumber,
       password,
-      dentist,
       branches
     });
 
@@ -48,7 +47,7 @@ const createPatient = async (req, res) => {
 };
 
 const updatePatient = async (req, res) => {
-  const { id, name, email, age, contactNumber, password, dentist, branches } = req.body;
+  const { id, name, email, age, contactNumber, password, branches } = req.body;
 
   try {
     const patient = await Patient.findByIdAndUpdate(
@@ -56,7 +55,6 @@ const updatePatient = async (req, res) => {
       {
         name,
         password,
-        dentist,
         email,
         age,
         contactNumber,
