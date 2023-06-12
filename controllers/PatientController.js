@@ -1,4 +1,5 @@
 const Patient = require("../models/Patient");
+const bcrypt = require("bcrypt");
 
 const getAllPatients = async (req, res) => {
   try {
@@ -24,16 +25,22 @@ const getPatient = async (req, res) => {
 };
 
 const createPatient = async (req, res) => {
-  const { name, password, birthday, email, branches, contactNumber } = req.body;
+  const { firstName,lastname, middleName , gender, prefix, password, birthday, email, branches, contactNumber } = req.body;
 
   try {
+    const hashPassword = await bcrypt.hash(password, 10);
     const patient = await Patient.create({
-      name,
-      email,
-      birthday,
-      contactNumber,
-      password,
-      branches
+      
+      firstName: firstName,
+      lastname: lastname,
+      middleName: middleName,
+      prefix: prefix,
+      email: email,
+      password: hashPassword,
+      gender: gender,
+      birthday:birthday,
+      contactNumber:contactNumber,
+      branches:branches,
     });
 
     if (patient) {
@@ -47,29 +54,24 @@ const createPatient = async (req, res) => {
 };
 
 const updatePatient = async (req, res) => {
-  const { id, name, email, age, contactNumber, password, branches } = req.body;
+  const { id, firstName,lastname, middleName , prefix, email,  gender, contactNumber, birthday, branches } = req.body;
 
   try {
-    const patient = await Patient.findByIdAndUpdate(
-      id,
-      {
-        name,
-        password,
-        email,
-        age,
-        contactNumber,
-        branches,
-      },
-      { new: true }
-    );
-
-    if (patient) {
+    const patient = await Patient.findById(id);
+    patient.firstName = firstName;
+    patient.lastname = lastname;
+    patient.middleName = middleName;
+    patient.prefix = prefix;
+    patient.email = email;
+    patient.gender = gender;
+    patient.birthday = birthday;
+    patient.contactNumber = contactNumber;
+    patient.branches = branches;
+    await patient.save();
       res.status(200).json({ message: `Patient updated with ID: ${patient._id}` });
-    } else {
-      res.status(400).json({ error: "Failed to update patient" });
-    }
-  } catch (error) {
-    res.status(500).json({ error: "Failed to update patient" });
+
+    } catch (error) {
+      throw error;
   }
 };
 

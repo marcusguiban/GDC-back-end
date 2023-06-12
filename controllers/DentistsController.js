@@ -76,20 +76,21 @@ const getDentist = async (req, res) => {
 };
 //create
 const createDentist = async (req, res) => {
-    const {name, email, password, gender, birthday, contact_number, prc_number, ptr_number, branches} = req.body;
+    const {firstName,lastname, middleName , prefix,  email, password, gender, birthday, contact_number, prc_number, ptr_number, branches} = req.body;
     try {    
         const hashPassword = await bcrypt.hash(password, 10);
-        let profilePicture = ''; // Default profile picture value
-
-        // Check if a file is uploaded
+        let profilePicture = ''; 
         if (req.file) {
-            profilePicture = req.file.filename; // Use the uploaded image URL
+            profilePicture = req.file.filename; 
         } else {
             // Set default image file path relative to the current file
             profilePicture = `https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg`;
         }
         const dentist = await Dentist.create({
-            name: name,
+            firstName: firstName,
+            lastname: lastname,
+            middleName: middleName,
+            prefix: prefix,
             email: email,
             password: hashPassword,
             gender: gender,
@@ -112,12 +113,16 @@ const createDentist = async (req, res) => {
 };
 // update
 const updateDentist = async (req, res) => {
-    const { id, name, email, birthday, contact_number, prc_number, ptr_number, branches } = req.body;
+    const { id, firstName,lastname, middleName , prefix, gender, email, birthday, contact_number, prc_number, ptr_number, branches } = req.body;
     try {
       
       const dentist = await Dentist.findById(id);
-      dentist.name = name;
+      dentist.firstName = firstName;
+      dentist.lastname = lastname;
+      dentist.middleName = middleName;
+      dentist.prefix = prefix;
       dentist.email = email;
+      dentist.gender = gender;
       dentist.birthday = birthday;
       dentist.contact_number = contact_number;
       dentist.prc_number = prc_number;

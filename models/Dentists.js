@@ -6,20 +6,24 @@ const dentistsSchema = new Schema({
     dentistsId: {
         type: String,
         unique: true,
-      },
-    name: {
+    },
+    firstName: {
         type: String,
         required: true,
     },
-
+    lastname: {
+      type: String,
+      required: true,
+    },
+    middleName: {
+    type: String,
+    },    
+    prefix: {
+  type: String,
+  },
     email: {
         type: String,
         required: true,
-        required: [true, 'Please provide email'],
-        match: [
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-          'Please provide a valid email',
-        ],
     },
     gender: {
         type: String,

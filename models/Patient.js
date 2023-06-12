@@ -5,10 +5,20 @@ const patientSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
-  name: {
+  firstName: {
     type: String,
     required: true,
-  },
+},
+lastname: {
+  type: String,
+  required: true,
+},
+middleName: {
+type: String,
+},    
+prefix: {
+type: String,
+},
   email: {
     type: String,
     required: true,
@@ -24,6 +34,11 @@ const patientSchema = new mongoose.Schema({
   },
   password: {
     type: String,
+    required: true,
+  },
+  gender: {
+    type: String,
+    enum: ["Male", "Female", "Other"],
     required: true,
   },
   branches: {   

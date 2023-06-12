@@ -24,12 +24,16 @@ const getAppointment = async (req, res) => {
 };
 
 const createAppointment = async (req, res) => {
-  const { patient, dentist, branch, time,day } = req.body;
+  const { patientName, PatientID, PatientEmail, PatientContactNumber, dentistName, dentistID, branch, time,day } = req.body;
 
   try {
     const appointment = await Appointment.create({
-      patient: patient,
-      dentist: dentist,
+      patientName: patientName,
+      PatientID: PatientID,
+      PatientEmail: PatientEmail,
+      PatientContactNumber: PatientContactNumber,
+      dentistName: dentistName,
+      dentistID: dentistID,
       branch: branch,
       day:day,
       time: time,
@@ -41,17 +45,21 @@ const createAppointment = async (req, res) => {
       res.status(400).json({ msg: "Appointment not created" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Failed to create appointment" });
-  }
+    throw error;
+}
 };
 
 const updateAppointment = async (req, res) => {
-  const { patient, dentist, branch, time, id } = req.body;
+  const { patientName, PatientID, PatientContactNumber, PatientEmail, dentistName, dentistID, branch, time, id } = req.body;
 
   try {
     const appointment = await Appointment.findByIdAndUpdate(id, {
-      patient: patient,
-      dentist: dentist,
+      patientName: patientName,
+      PatientID: PatientID,
+      PatientEmail: PatientEmail,
+      PatientContactNumber: PatientContactNumber,
+      dentistName: dentistName,
+      dentistID: dentistID,
       branch: branch,
       time: time,
     });
@@ -77,8 +85,8 @@ const deleteAppointment = async (req, res) => {
       res.status(400).json({ msg: "Appointment not deleted" });
     }
   } catch (error) {
-    res.status(500).json({ error: "Failed to delete appointment" });
-  }
+    throw error;
+}
 };
 
 module.exports = {

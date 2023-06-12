@@ -1,15 +1,27 @@
 const mongoose = require("mongoose");
 
 const appointmentSchema = new mongoose.Schema({
-  patient: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Patient",
-    required: true,
+  patientName: {
+    type: String,
+    required: true, 
   },
-  dentist: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Dentist",
-    required: true,
+  PatientID: {
+    type: String, 
+    required: true, 
+  },
+  PatientEmail: {
+    type: String, 
+    required: true, 
+  },
+  PatientContactNumber: {
+    type: String, 
+    required: true, 
+  },
+  dentistName: {
+    type: String, 
+  },
+  dentistID: {
+    type: String, 
   },
   branch: {
     type: String,
@@ -34,8 +46,10 @@ const appointmentSchema = new mongoose.Schema({
       validator: function (value) {
         const validTimes = [
           "09:00am-10:00am",
+          "10:00am-11:00am",
           "11:00am-12:00pm",
           "12:00pm-01:00pm",
+          "01:00pm-02:00pm",
           "02:00pm-03:00pm",
           "03:00pm-04:00pm",
           "04:00pm-05:00pm",
