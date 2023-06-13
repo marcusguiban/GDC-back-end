@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
 const patientController = require("../controllers/PatientController");
+const upload = require('../middlewares/upload');
 
 //get request or read
 
@@ -17,6 +17,8 @@ router.post("/", patientController.createPatient);
 
 
 router.put("/", patientController.updatePatient);
+
+router.put("/Change-password", patientController.changePassword);
 
 // delete
 

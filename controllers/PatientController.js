@@ -75,6 +75,33 @@ const updatePatient = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  const { id, password, newPassword, confirmPassword } = req.body;
+
+  try {
+    const patient = await Patient.findById(id);
+    if (!patient) {
+      return res.status(400).json({ msg: "Invalid patient ID" });
+    }
+    const isPasswordCorrect = await bcrypt.compare(password, patient.password);
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ msg: "Invalid password" });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ msg: "New passwords do not match" });
+    }
+    const hashNewPassword = await bcrypt.hash(newPassword, 10);
+
+    patient.password = hashNewPassword;
+    await patient.save();
+
+    res.status(200).json({ msg: "Password changed successfully" });
+  } catch (error) {
+    throw error;
+}
+};
+
 const deletePatient = async (req, res) => {
   const { id } = req.body;
 
@@ -96,4 +123,5 @@ module.exports = {
   createPatient,
   updatePatient,
   deletePatient,
+  changePassword, 
 };
