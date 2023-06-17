@@ -11,6 +11,7 @@ const PatientRoutes = require("./routes/Patient")
 const DentalChartRoutes = require("./routes/Dentalchart")
 const AppointmentRoutes = require("./routes/Appointment")
 
+const AuthRoutes = require("./routes/Authentication")
 
 connection();
 
@@ -26,6 +27,9 @@ app.use("/api/users", UserRoutes);
 app.use("/api/patients", PatientRoutes);
 app.use("/api/Dental-charts", DentalChartRoutes);
 app.use("/api/appointments", AppointmentRoutes);
+
+
+app.use("/api", AuthRoutes);
 
 const PORT = process.env.PORT || 5000;
 

@@ -1,5 +1,5 @@
 const User = require("../models/user");
-
+const bcrypt = require("bcrypt");
 
 const getAllUser = async (req, res) => {
     try {
@@ -25,9 +25,10 @@ const createUser = async (req, res) => {
     const { UserName, password} = req.body;
   
     try {
+      const hashPassword = await bcrypt.hash(password, 10);
       const user = await User.create({
         UserName: UserName,
-        password: password,
+        password: hashPassword,
       });
   
       if (user) {
@@ -42,11 +43,12 @@ const createUser = async (req, res) => {
 
   const updateUser = async (req, res) => {
     const { UserName, password, id } = req.body;
-  
+    const hashPassword = await bcrypt.hash(password, 10);
     try {
+      
       const user = await User.findByIdAndUpdate(id, {
         UserName: UserName,
-        password: password,
+        password: hashPassword,
 
       });
   
