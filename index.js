@@ -8,7 +8,7 @@ const connection = require("./database");
 const UserRoutes = require("./routes/User");
 const DentistsRoutes = require("./routes/Dentists")
 const PatientRoutes = require("./routes/Patient")
-const DentalChartRoutes = require("./routes/Dentalchart")
+// const DentalChartRoutes = require("./routes/Dentalchart")
 const AppointmentRoutes = require("./routes/Appointment")
 
 const AuthRoutes = require("./routes/Authentication")
@@ -25,7 +25,7 @@ app.use(cors());
 app.use("/api/dentists", DentistsRoutes);
 app.use("/api/users", UserRoutes);
 app.use("/api/patients", PatientRoutes);
-app.use("/api/Dental-charts", DentalChartRoutes);
+// app.use("/api/Dental-charts", DentalChartRoutes);
 app.use("/api/appointments", AppointmentRoutes);
 
 
