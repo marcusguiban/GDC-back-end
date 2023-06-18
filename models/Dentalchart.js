@@ -65,17 +65,17 @@ const dentalChartSchema = new mongoose.Schema({
   Tooth64:{type: String, default: "OK"}, 
   Tooth65:{type: String, default: "OK"}, 
   
-  Tooth71:{type: String, }, 
-  Tooth72:{type: String, }, 
-  Tooth73:{type: String, }, 
-  Tooth74:{type: String, }, 
-  Tooth75:{type: String, }, 
+  Tooth71:{type: String, default: "OK"}, 
+  Tooth72:{type: String, default: "OK"}, 
+  Tooth73:{type: String, default: "OK"}, 
+  Tooth74:{type: String, default: "OK"}, 
+  Tooth75:{type: String, default: "OK"}, 
 
-  Tooth81:{type: String, }, 
-  Tooth82:{type: String, }, 
-  Tooth83:{type: String, }, 
-  Tooth84:{type: String, }, 
-  Tooth85:{type: String, }, 
+  Tooth81:{type: String, default: "OK"}, 
+  Tooth82:{type: String, default: "OK"}, 
+  Tooth83:{type: String, default: "OK" }, 
+  Tooth84:{type: String, default: "OK"}, 
+  Tooth85:{type: String, default: "OK"}, 
 },{timestamps:true});
 
   module.exports = mongoose.model("DentalChart", dentalChartSchema);
